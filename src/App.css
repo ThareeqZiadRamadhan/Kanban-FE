@@ -1,38 +1,164 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #EAEAEA; /* Latar belakang abu-abu muda */
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.app-header {
+  display: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.kanban-layout {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  flex-wrap: wrap; 
+  gap: 20px;
+  padding: 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* === Sidebar Biru (Sekarang Kosong) === */
+.sidebar-section {
+  background-color: #6CD3D4;
+  border-radius: 20px;
+  padding: 20px;
+  width: 300px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* === Papan Utama Ungu === */
+.main-board-section {
+  background-color: #B92E9C;
+  border-radius: 20px;
+  padding: 20px;
+  flex-grow: 1; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.board-title-chip {
+  background: white;
+  border-radius: 10px;
+  padding: 5px 15px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #B92E9C;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.main-board-columns {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+}
+
+/* === Styling Kolom/List (Pink) === */
+/* Ini akan berlaku untuk SEMUA list, termasuk 'To Do' */
+.list-container {
+  background-color: #E8C8E0;
+  border-radius: 15px;
+  width: 270px;
+  padding: 15px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.list-title {
+  background-color: white;
+  border-radius: 8px;
+  padding: 3px 12px;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-block;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* === Styling Kartu (Putih) === */
+.card-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  color: #172b4d;
+}
+
+/* === Styling Form Tambah Kartu === */
+.add-card-form {
+  margin-top: 15px;
+}
+
+.add-card-input {
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+}
+
+.add-card-button {
+  background-color: #4C4C4C;
   color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+.add-card-button:hover {
+  background-color: #333;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.list-sidebar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2D3748; /* Teks abu-abu tua */
+  margin-bottom: 15px;
+}
+
+/* Style untuk tombol "add new card" palsu di sidebar */
+.add-card-sidebar-button {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 10px; /* Jarak dari kartu terakhir */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  color: #5E6C84; /* Abu-abu */
+  cursor: pointer;
+  text-align: left;
+}
+
+.add-card-sidebar-button:hover {
+  background-color: #f4f5f7;
+}
+
+/* Style untuk tombol "Batal" di form sidebar */
+.cancel-card-button {
+  background-color: transparent;
+  color: #5E6C84;
+  border: none;
+  border-radius: 3px;
+  padding: 6px 12px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.cancel-card-button:hover {
+  background-color: #f4f5f7;
 }
