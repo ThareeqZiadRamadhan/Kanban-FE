@@ -2,7 +2,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #EAEAEA; /* Latar belakang abu-abu muda */
+  background-color: #EAEAEA;
   margin: 0;
   padding: 0;
 }
@@ -13,16 +13,16 @@ body {
 
 .kanban-layout {
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
   min-height: 100vh;
   box-sizing: border-box;
 }
 
-/* === Sidebar Biru (Sekarang Kosong) === */
+/* === Sidebar Biru (Sekarang Tema Gelap) === */
 .sidebar-section {
-  background-color: #6CD3D4;
+  background-color: #63B9C8; /* Background Biru Tua */
   border-radius: 20px;
   padding: 20px;
   width: 300px;
@@ -35,7 +35,7 @@ body {
   background-color: #B92E9C;
   border-radius: 20px;
   padding: 20px;
-  flex-grow: 1; 
+  flex-grow: 1;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
@@ -56,8 +56,7 @@ body {
   overflow-x: auto;
 }
 
-/* === Styling Kolom/List (Pink) === */
-/* Ini akan berlaku untuk SEMUA list, termasuk 'To Do' */
+/* === Styling Kolom/List (Pink) - UNTUK PAPAN UNGU === */
 .list-container {
   background-color: #E8C8E0;
   border-radius: 15px;
@@ -67,6 +66,7 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Style judul kolom (chip) - UNTUK PAPAN UNGU */
 .list-title {
   background-color: white;
   border-radius: 8px;
@@ -78,7 +78,20 @@ body {
   color: #333;
 }
 
-/* === Styling Kartu (Putih) === */
+/* === Style untuk Kolom/List (Transparan) - UNTUK SIDEBAR === */
+.list-sidebar-style {
+  width: 100%;
+}
+
+/* Style judul (teks) - UNTUK SIDEBAR */
+.list-sidebar-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #FFFFFF; /* Teks Putih */
+  margin-bottom: 15px;
+}
+
+/* === Styling Kartu (Putih) - UNTUK PAPAN UNGU === */
 .card-container {
   background-color: #ffffff;
   border-radius: 8px;
@@ -89,11 +102,63 @@ body {
   color: #172b4d;
 }
 
-/* === Styling Form Tambah Kartu === */
-.add-card-form {
-  margin-top: 15px;
+/* === Styling Kartu (Gelap) - UNTUK SIDEBAR === */
+.sidebar-card-container {
+  background-color: #63B9C8; /* Abu-abu tua */
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  color: #FFFFFF; /* Teks Putih */
 }
 
+
+/* === STYLING "ADD CARD" UNTUK SIDEBAR === */
+.list-sidebar-style .add-card-area {
+  margin-bottom: 15px; /* Jarak antara form dan kartu pertama */
+}
+
+.add-card-input-sidebar {
+  background-color: #63B9C8; 
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #FFFFFF; /* Teks input putih */
+}
+.add-card-input-sidebar::placeholder {
+  color: #9B9FA3; /* Teks placeholder "Add a card" */
+}
+
+
+/* === STYLING "ADD CARD" UNTUK PAPAN UNGU (Trello-style) === */
+.list-container .add-card-area {
+  margin-top: 10px;
+}
+
+/* Tombol "+ Add a card" */
+.add-card-toggle-button {
+  background-color: transparent;
+  border: none;
+  color: #5E6C84;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  width: 100%;
+  text-align: left;
+}
+.add-card-toggle-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Form yang Toggled */
 .add-card-input {
   background-color: white;
   border: none;
@@ -107,8 +172,14 @@ body {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
 }
 
+.add-card-form-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .add-card-button {
-  background-color: #4C4C4C;
+  background-color: #0079bf; /* Biru Trello */
   color: white;
   border: none;
   border-radius: 8px;
@@ -116,49 +187,22 @@ body {
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
   font-size: 14px;
-  width: 100%;
+  font-weight: 500;
 }
-
 .add-card-button:hover {
-  background-color: #333;
+  background-color: #026aa7;
 }
 
-.list-sidebar-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #2D3748; /* Teks abu-abu tua */
-  margin-bottom: 15px;
-}
-
-/* Style untuk tombol "add new card" palsu di sidebar */
-.add-card-sidebar-button {
-  background-color: #ffffff;
-  border-radius: 8px;
-  padding: 12px;
-  margin-top: 10px; /* Jarak dari kartu terakhir */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  font-size: 14px;
-  color: #5E6C84; /* Abu-abu */
-  cursor: pointer;
-  text-align: left;
-}
-
-.add-card-sidebar-button:hover {
-  background-color: #f4f5f7;
-}
-
-/* Style untuk tombol "Batal" di form sidebar */
+/* Tombol Batal (X) */
 .cancel-card-button {
-  background-color: transparent;
-  color: #5E6C84;
+  background: none;
   border: none;
-  border-radius: 3px;
-  padding: 6px 12px;
-  font-family: 'Poppins', sans-serif;
+  color: #5E6C84;
+  font-size: 24px;
+  font-weight: 300;
   cursor: pointer;
-  margin-left: 8px;
+  padding: 0 8px;
 }
-
 .cancel-card-button:hover {
-  background-color: #f4f5f7;
+  color: #172b4d;
 }

@@ -1,8 +1,10 @@
+// File: /frontend/src/card.js
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-function Card({ card }) {
+// Tambahkan 'isSidebar'
+function Card({ card, isSidebar = false }) {
   const {
     attributes,
     listeners,
@@ -24,7 +26,8 @@ function Card({ card }) {
       style={style}
       {...attributes}
       {...listeners}
-      className="card-container"
+      // Gunakan className kondisional
+      className={isSidebar ? 'sidebar-card-container' : 'card-container'}
     >
       {card.title}
     </div>

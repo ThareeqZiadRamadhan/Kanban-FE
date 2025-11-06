@@ -5,15 +5,13 @@ import { useDroppable } from '@dnd-kit/core';
 import Card from './card'; // Impor 'card.js' (huruf kecil)
 import axios from 'axios';
 
-// Terima prop 'isSidebar' dengan default 'false'
 function List({ listId, list, lists, setLists, isSidebar = false }) {
   const { setNodeRef } = useDroppable({
     id: listId.toString(),
   });
 
   const [newCardTitle, setNewCardTitle] = useState('');
-  // State baru untuk menampilkan form di sidebar
-  const [isAddingCard, setIsAddingCard] = useState(false);
+  const [isAddingCard, setIsAddingCard] = useState(false); // Untuk form di papan
 
   const handleAddCard = (e) => {
     e.preventDefault();
@@ -28,9 +26,8 @@ function List({ listId, list, lists, setLists, isSidebar = false }) {
       const updatedList = { ...list, cards: [...list.cards, newCard] };
       setLists({ ...lists, [listId]: updatedList });
 
-      // Reset state
       setNewCardTitle('');
-      setIsAddingCard(false); // Tutup form setelah sukses
+      setIsAddingCard(false); // Reset/tutup form
     })
     .catch(error => {
       console.error('Gagal menambah kartu:', error);
@@ -39,81 +36,96 @@ function List({ listId, list, lists, setLists, isSidebar = false }) {
 
   const cardIds = list.cards.map(card => card._id.toString());
 
+  // --- KITA PISAHKAN JSX-NYA AGAR LEBIH RAPI ---
+
+  // 1. JSX untuk daftar kartu (selalu sama)
+  const cardListContent = (
+    <SortableContext
+      id={listId.toString()}
+      items={cardIds}
+      strategy={verticalListSortingStrategy}
+    >
+      <div
+        ref={setNodeRef}
+        style={{ minHeight: '40px', paddingBottom: '10px' }} // Beri min-height kecil
+      >
+        {list.cards.map((card) => (
+          // Teruskan prop 'isSidebar' ke Card
+          <Card key={card._id.toString()} card={card} isSidebar={isSidebar} />
+        ))}
+      </div>
+    </SortableContext>
+  );
+
+  // 2. JSX untuk area "Tambah Kartu"
+  const addCardAreaContent = (
+    <div className="add-card-area">
+      {isSidebar ? (
+        // --- TAMPILAN SIDEBAR (Form Selalu Terbuka) ---
+        <form className="add-card-form-sidebar" onSubmit={handleAddCard}>
+          <input
+            type="text"
+            className="add-card-input-sidebar"
+            placeholder="Add a card" // Placeholder baru
+            value={newCardTitle}
+            onChange={(e) => setNewCardTitle(e.target.value)}
+          />
+          {/* Tombol submit disembunyikan, user tekan Enter */}
+          <button type="submit" style={{ display: 'none' }} />
+        </form>
+      ) : (
+        // --- TAMPILAN BOARD (Trello-style Toggle) ---
+        <>
+          {isAddingCard ? (
+            <form className="add-card-form-toggled" onSubmit={handleAddCard}>
+              <input
+                type="text"
+                className="add-card-input"
+                placeholder="Enter a title..."
+                value={newCardTitle}
+                onChange={(e) => setNewCardTitle(e.target.value)}
+                autoFocus
+              />
+              <div className="add-card-form-controls">
+                <button type="submit" className="add-card-button">
+                  Add card
+                </button>
+                <button
+                  type="button"
+                  className="cancel-card-button"
+                  onClick={() => setIsAddingCard(false)}
+                >
+                  &times;
+                </button>
+              </div>
+            </form>
+          ) : (
+            <button
+              className="add-card-toggle-button"
+              onClick={() => setIsAddingCard(true)}
+            >
+              + Add a card
+            </button>
+          )}
+        </>
+      )}
+    </div>
+  );
+
+  // --- RENDER UTAMA ---
   return (
     <div className={isSidebar ? 'list-sidebar-style' : 'list-container'}>
-      
-      {/* Ganti style judul jika 'isSidebar' */}
       <h2 className={isSidebar ? 'list-sidebar-title' : 'list-title'}>
         {list.title}
       </h2>
 
-      <SortableContext
-        id={listId.toString()}
-        items={cardIds}
-        strategy={verticalListSortingStrategy}
-      >
-        <div
-          ref={setNodeRef}
-          style={{ minHeight: 100, paddingBottom: '10px' }}
-        >
-          {list.cards.map((card) => (
-            <Card key={card._id.toString()} card={card} />
-          ))}
-        </div>
-      </SortableContext>
+      {/* Logika Tampilan Baru:
+          - Sidebar: Form dulu, baru kartu
+          - Board: Kartu dulu, baru form
+      */}
+      {isSidebar ? addCardAreaContent : cardListContent}
+      {isSidebar ? cardListContent : addCardAreaContent}
 
-      {/* --- Logika Form Tambah Kartu yang Baru --- */}
-      {isSidebar ? (
-        // --- TAMPILAN SIDEBAR ---
-        <>
-          {!isAddingCard ? (
-            // 1. Tombol palsu "add new card"
-            <div 
-              className="add-card-sidebar-button" 
-              onClick={() => setIsAddingCard(true)}
-            >
-              add new card
-              <span style={{ float: 'right' }}>{/* Nanti bisa diisi ikon amplop */}</span>
-            </div>
-          ) : (
-            // 2. Form yang muncul saat di-klik
-            <form className="add-card-form" onSubmit={handleAddCard}>
-              <input
-                type="text"
-                className="add-card-input"
-                placeholder="Masukkan judul kartu..."
-                value={newCardTitle}
-                onChange={(e) => setNewCardTitle(e.target.value)}
-                autoFocus // Langsung fokus ke input
-              />
-              <button type="submit" className="add-card-button">
-                Tambah
-              </button>
-              <button 
-                type="button" 
-                className="cancel-card-button" 
-                onClick={() => setIsAddingCard(false)}
-              >
-                Batal
-              </button>
-            </form>
-          )}
-        </>
-      ) : (
-        // --- TAMPILAN BOARD (Tetap sama) ---
-        <form className="add-card-form" onSubmit={handleAddCard}>
-          <input
-            type="text"
-            className="add-card-input"
-            placeholder="Masukkan judul kartu..."
-            value={newCardTitle}
-            onChange={(e) => setNewCardTitle(e.target.value)}
-          />
-          <button type="submit" className="add-card-button">
-            Tambah Kartu
-          </button>
-        </form>
-      )}
     </div>
   );
 }
